@@ -88,7 +88,7 @@ resource "null_resource" "users_passwords" {
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOF
-echo "${each.key}, ${aws_iam_user_login_profile.deep_racer_participant[each.key].password}" >> users_and_passwords.csv
+echo -e "${each.key},"$(echo ${base64encode(aws_iam_user_login_profile.deep_racer_participant[each.key].password)} |base64 -d) >> users_and_passwords.csv
 EOF
   }
 }
